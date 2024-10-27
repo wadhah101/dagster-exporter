@@ -1,0 +1,33 @@
+services:
+  exporter:
+    build: .
+    networks:
+      - default
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+
+  prometheus:
+    image: prom/prometheus:v2.55.0
+    networks:
+      - default
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+
+  grafana:
+    image: grafana/grafana:10.4.11-ubuntu
+    networks:
+      - default
+    ports:
+      - "3000:3000"
+
+networks:
+  default:
+    name: dagster-exporter
+
+volumes:
+  prometheus_data:
