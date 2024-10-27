@@ -1,0 +1,11 @@
+name: pre-commit auto-update
+
+on:
+  schedule:
+    - cron: "0 6 * * 1"
+
+jobs:
+  pre-commit-auto-update:
+    uses: Qantev/ci-workflows/.github/workflows/pre-commit-auto-update.yaml@v0.2.0
+    with:
+      working-directory: .
