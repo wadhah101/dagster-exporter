@@ -1,5 +1,7 @@
 # dagster-exporter
 
+WORK IN PROGRESS - FIRST DRAFT - NOT USABLE
+
 Prometheus exporter for Dagster using dagster graphql api
 Inspired by [celery-exporter](https://github.com/danihodovic/celery-exporter)
 
