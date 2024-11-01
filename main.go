@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"net/http"
 
 	"math/rand"
@@ -36,8 +35,9 @@ func getHandler() *http.Handler {
 }
 
 func main() {
-	handler := getHandler()
+	// handler := getHandler()
 
-	http.Handle("/metrics", *handler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	// http.Handle("/metrics", *handler)
+	// log.Fatal(http.ListenAndServe(":8080", nil))
+	FecthSchema()
 }
