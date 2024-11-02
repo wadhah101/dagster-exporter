@@ -1,5 +1,5 @@
-query getSuccessfulRuns {
-  runsOrError(filter: { statuses: SUCCESS }) {
+query GetRunsOrError($status: RunStatus!) {
+  runsOrError(filter: { statuses: [$status] }) {
     ... on Runs {
       count
     }

@@ -10,29 +10,27 @@ import (
 	"github.com/Khan/genqlient/graphql"
 )
 
-// getSuccessfulRunsResponse is returned by getSuccessfulRuns on success.
-type getSuccessfulRunsResponse struct {
+// GetRunsOrErrorResponse is returned by GetRunsOrError on success.
+type GetRunsOrErrorResponse struct {
 	// Retrieve runs after applying a filter, cursor, and limit.
-	RunsOrError getSuccessfulRunsRunsOrError `json:"-"`
+	RunsOrError GetRunsOrErrorRunsOrError `json:"-"`
 }
 
-// GetRunsOrError returns getSuccessfulRunsResponse.RunsOrError, and is useful for accessing the field via an interface.
-func (v *getSuccessfulRunsResponse) GetRunsOrError() getSuccessfulRunsRunsOrError {
-	return v.RunsOrError
-}
+// GetRunsOrError returns GetRunsOrErrorResponse.RunsOrError, and is useful for accessing the field via an interface.
+func (v *GetRunsOrErrorResponse) GetRunsOrError() GetRunsOrErrorRunsOrError { return v.RunsOrError }
 
-func (v *getSuccessfulRunsResponse) UnmarshalJSON(b []byte) error {
+func (v *GetRunsOrErrorResponse) UnmarshalJSON(b []byte) error {
 
 	if string(b) == "null" {
 		return nil
 	}
 
 	var firstPass struct {
-		*getSuccessfulRunsResponse
+		*GetRunsOrErrorResponse
 		RunsOrError json.RawMessage `json:"runsOrError"`
 		graphql.NoUnmarshalJSON
 	}
-	firstPass.getSuccessfulRunsResponse = v
+	firstPass.GetRunsOrErrorResponse = v
 
 	err := json.Unmarshal(b, &firstPass)
 	if err != nil {
@@ -43,22 +41,22 @@ func (v *getSuccessfulRunsResponse) UnmarshalJSON(b []byte) error {
 		dst := &v.RunsOrError
 		src := firstPass.RunsOrError
 		if len(src) != 0 && string(src) != "null" {
-			err = __unmarshalgetSuccessfulRunsRunsOrError(
+			err = __unmarshalGetRunsOrErrorRunsOrError(
 				src, dst)
 			if err != nil {
 				return fmt.Errorf(
-					"unable to unmarshal getSuccessfulRunsResponse.RunsOrError: %w", err)
+					"unable to unmarshal GetRunsOrErrorResponse.RunsOrError: %w", err)
 			}
 		}
 	}
 	return nil
 }
 
-type __premarshalgetSuccessfulRunsResponse struct {
+type __premarshalGetRunsOrErrorResponse struct {
 	RunsOrError json.RawMessage `json:"runsOrError"`
 }
 
-func (v *getSuccessfulRunsResponse) MarshalJSON() ([]byte, error) {
+func (v *GetRunsOrErrorResponse) MarshalJSON() ([]byte, error) {
 	premarshaled, err := v.__premarshalJSON()
 	if err != nil {
 		return nil, err
@@ -66,43 +64,43 @@ func (v *getSuccessfulRunsResponse) MarshalJSON() ([]byte, error) {
 	return json.Marshal(premarshaled)
 }
 
-func (v *getSuccessfulRunsResponse) __premarshalJSON() (*__premarshalgetSuccessfulRunsResponse, error) {
-	var retval __premarshalgetSuccessfulRunsResponse
+func (v *GetRunsOrErrorResponse) __premarshalJSON() (*__premarshalGetRunsOrErrorResponse, error) {
+	var retval __premarshalGetRunsOrErrorResponse
 
 	{
 
 		dst := &retval.RunsOrError
 		src := v.RunsOrError
 		var err error
-		*dst, err = __marshalgetSuccessfulRunsRunsOrError(
+		*dst, err = __marshalGetRunsOrErrorRunsOrError(
 			&src)
 		if err != nil {
 			return nil, fmt.Errorf(
-				"unable to marshal getSuccessfulRunsResponse.RunsOrError: %w", err)
+				"unable to marshal GetRunsOrErrorResponse.RunsOrError: %w", err)
 		}
 	}
 	return &retval, nil
 }
 
-// getSuccessfulRunsRunsOrError includes the requested fields of the GraphQL interface RunsOrError.
+// GetRunsOrErrorRunsOrError includes the requested fields of the GraphQL interface RunsOrError.
 //
-// getSuccessfulRunsRunsOrError is implemented by the following types:
-// getSuccessfulRunsRunsOrErrorInvalidPipelineRunsFilterError
-// getSuccessfulRunsRunsOrErrorPythonError
-// getSuccessfulRunsRunsOrErrorRuns
-type getSuccessfulRunsRunsOrError interface {
-	implementsGraphQLInterfacegetSuccessfulRunsRunsOrError()
+// GetRunsOrErrorRunsOrError is implemented by the following types:
+// GetRunsOrErrorRunsOrErrorInvalidPipelineRunsFilterError
+// GetRunsOrErrorRunsOrErrorPythonError
+// GetRunsOrErrorRunsOrErrorRuns
+type GetRunsOrErrorRunsOrError interface {
+	implementsGraphQLInterfaceGetRunsOrErrorRunsOrError()
 	// GetTypename returns the receiver's concrete GraphQL type-name (see interface doc for possible values).
 	GetTypename() string
 }
 
-func (v *getSuccessfulRunsRunsOrErrorInvalidPipelineRunsFilterError) implementsGraphQLInterfacegetSuccessfulRunsRunsOrError() {
+func (v *GetRunsOrErrorRunsOrErrorInvalidPipelineRunsFilterError) implementsGraphQLInterfaceGetRunsOrErrorRunsOrError() {
 }
-func (v *getSuccessfulRunsRunsOrErrorPythonError) implementsGraphQLInterfacegetSuccessfulRunsRunsOrError() {
+func (v *GetRunsOrErrorRunsOrErrorPythonError) implementsGraphQLInterfaceGetRunsOrErrorRunsOrError() {
 }
-func (v *getSuccessfulRunsRunsOrErrorRuns) implementsGraphQLInterfacegetSuccessfulRunsRunsOrError() {}
+func (v *GetRunsOrErrorRunsOrErrorRuns) implementsGraphQLInterfaceGetRunsOrErrorRunsOrError() {}
 
-func __unmarshalgetSuccessfulRunsRunsOrError(b []byte, v *getSuccessfulRunsRunsOrError) error {
+func __unmarshalGetRunsOrErrorRunsOrError(b []byte, v *GetRunsOrErrorRunsOrError) error {
 	if string(b) == "null" {
 		return nil
 	}
@@ -117,93 +115,125 @@ func __unmarshalgetSuccessfulRunsRunsOrError(b []byte, v *getSuccessfulRunsRunsO
 
 	switch tn.TypeName {
 	case "InvalidPipelineRunsFilterError":
-		*v = new(getSuccessfulRunsRunsOrErrorInvalidPipelineRunsFilterError)
+		*v = new(GetRunsOrErrorRunsOrErrorInvalidPipelineRunsFilterError)
 		return json.Unmarshal(b, *v)
 	case "PythonError":
-		*v = new(getSuccessfulRunsRunsOrErrorPythonError)
+		*v = new(GetRunsOrErrorRunsOrErrorPythonError)
 		return json.Unmarshal(b, *v)
 	case "Runs":
-		*v = new(getSuccessfulRunsRunsOrErrorRuns)
+		*v = new(GetRunsOrErrorRunsOrErrorRuns)
 		return json.Unmarshal(b, *v)
 	case "":
 		return fmt.Errorf(
 			"response was missing RunsOrError.__typename")
 	default:
 		return fmt.Errorf(
-			`unexpected concrete type for getSuccessfulRunsRunsOrError: "%v"`, tn.TypeName)
+			`unexpected concrete type for GetRunsOrErrorRunsOrError: "%v"`, tn.TypeName)
 	}
 }
 
-func __marshalgetSuccessfulRunsRunsOrError(v *getSuccessfulRunsRunsOrError) ([]byte, error) {
+func __marshalGetRunsOrErrorRunsOrError(v *GetRunsOrErrorRunsOrError) ([]byte, error) {
 
 	var typename string
 	switch v := (*v).(type) {
-	case *getSuccessfulRunsRunsOrErrorInvalidPipelineRunsFilterError:
+	case *GetRunsOrErrorRunsOrErrorInvalidPipelineRunsFilterError:
 		typename = "InvalidPipelineRunsFilterError"
 
 		result := struct {
 			TypeName string `json:"__typename"`
-			*getSuccessfulRunsRunsOrErrorInvalidPipelineRunsFilterError
+			*GetRunsOrErrorRunsOrErrorInvalidPipelineRunsFilterError
 		}{typename, v}
 		return json.Marshal(result)
-	case *getSuccessfulRunsRunsOrErrorPythonError:
+	case *GetRunsOrErrorRunsOrErrorPythonError:
 		typename = "PythonError"
 
 		result := struct {
 			TypeName string `json:"__typename"`
-			*getSuccessfulRunsRunsOrErrorPythonError
+			*GetRunsOrErrorRunsOrErrorPythonError
 		}{typename, v}
 		return json.Marshal(result)
-	case *getSuccessfulRunsRunsOrErrorRuns:
+	case *GetRunsOrErrorRunsOrErrorRuns:
 		typename = "Runs"
 
 		result := struct {
 			TypeName string `json:"__typename"`
-			*getSuccessfulRunsRunsOrErrorRuns
+			*GetRunsOrErrorRunsOrErrorRuns
 		}{typename, v}
 		return json.Marshal(result)
 	case nil:
 		return []byte("null"), nil
 	default:
 		return nil, fmt.Errorf(
-			`unexpected concrete type for getSuccessfulRunsRunsOrError: "%T"`, v)
+			`unexpected concrete type for GetRunsOrErrorRunsOrError: "%T"`, v)
 	}
 }
 
-// getSuccessfulRunsRunsOrErrorInvalidPipelineRunsFilterError includes the requested fields of the GraphQL type InvalidPipelineRunsFilterError.
-type getSuccessfulRunsRunsOrErrorInvalidPipelineRunsFilterError struct {
+// GetRunsOrErrorRunsOrErrorInvalidPipelineRunsFilterError includes the requested fields of the GraphQL type InvalidPipelineRunsFilterError.
+type GetRunsOrErrorRunsOrErrorInvalidPipelineRunsFilterError struct {
 	Typename string `json:"__typename"`
 }
 
-// GetTypename returns getSuccessfulRunsRunsOrErrorInvalidPipelineRunsFilterError.Typename, and is useful for accessing the field via an interface.
-func (v *getSuccessfulRunsRunsOrErrorInvalidPipelineRunsFilterError) GetTypename() string {
+// GetTypename returns GetRunsOrErrorRunsOrErrorInvalidPipelineRunsFilterError.Typename, and is useful for accessing the field via an interface.
+func (v *GetRunsOrErrorRunsOrErrorInvalidPipelineRunsFilterError) GetTypename() string {
 	return v.Typename
 }
 
-// getSuccessfulRunsRunsOrErrorPythonError includes the requested fields of the GraphQL type PythonError.
-type getSuccessfulRunsRunsOrErrorPythonError struct {
+// GetRunsOrErrorRunsOrErrorPythonError includes the requested fields of the GraphQL type PythonError.
+type GetRunsOrErrorRunsOrErrorPythonError struct {
 	Typename string `json:"__typename"`
 }
 
-// GetTypename returns getSuccessfulRunsRunsOrErrorPythonError.Typename, and is useful for accessing the field via an interface.
-func (v *getSuccessfulRunsRunsOrErrorPythonError) GetTypename() string { return v.Typename }
+// GetTypename returns GetRunsOrErrorRunsOrErrorPythonError.Typename, and is useful for accessing the field via an interface.
+func (v *GetRunsOrErrorRunsOrErrorPythonError) GetTypename() string { return v.Typename }
 
-// getSuccessfulRunsRunsOrErrorRuns includes the requested fields of the GraphQL type Runs.
-type getSuccessfulRunsRunsOrErrorRuns struct {
+// GetRunsOrErrorRunsOrErrorRuns includes the requested fields of the GraphQL type Runs.
+type GetRunsOrErrorRunsOrErrorRuns struct {
 	Typename string `json:"__typename"`
 	Count    int    `json:"count"`
 }
 
-// GetTypename returns getSuccessfulRunsRunsOrErrorRuns.Typename, and is useful for accessing the field via an interface.
-func (v *getSuccessfulRunsRunsOrErrorRuns) GetTypename() string { return v.Typename }
+// GetTypename returns GetRunsOrErrorRunsOrErrorRuns.Typename, and is useful for accessing the field via an interface.
+func (v *GetRunsOrErrorRunsOrErrorRuns) GetTypename() string { return v.Typename }
 
-// GetCount returns getSuccessfulRunsRunsOrErrorRuns.Count, and is useful for accessing the field via an interface.
-func (v *getSuccessfulRunsRunsOrErrorRuns) GetCount() int { return v.Count }
+// GetCount returns GetRunsOrErrorRunsOrErrorRuns.Count, and is useful for accessing the field via an interface.
+func (v *GetRunsOrErrorRunsOrErrorRuns) GetCount() int { return v.Count }
 
-// The query or mutation executed by getSuccessfulRuns.
-const getSuccessfulRuns_Operation = `
-query getSuccessfulRuns {
-	runsOrError(filter: {statuses:SUCCESS}) {
+// The status of run execution.
+type RunStatus string
+
+const (
+	// Runs waiting to be launched by the Dagster Daemon.
+	RunStatusQueued RunStatus = "QUEUED"
+	// Runs that have been created, but not yet submitted for launch.
+	RunStatusNotStarted RunStatus = "NOT_STARTED"
+	// Runs that are managed outside of the Dagster control plane.
+	RunStatusManaged RunStatus = "MANAGED"
+	// Runs that have been launched, but execution has not yet started.
+	RunStatusStarting RunStatus = "STARTING"
+	// Runs that have been launched and execution has started.
+	RunStatusStarted RunStatus = "STARTED"
+	// Runs that have successfully completed.
+	RunStatusSuccess RunStatus = "SUCCESS"
+	// Runs that have failed to complete.
+	RunStatusFailure RunStatus = "FAILURE"
+	// Runs that are in-progress and pending to be canceled.
+	RunStatusCanceling RunStatus = "CANCELING"
+	// Runs that have been canceled before completion.
+	RunStatusCanceled RunStatus = "CANCELED"
+)
+
+// __GetRunsOrErrorInput is used internally by genqlient
+type __GetRunsOrErrorInput struct {
+	Status RunStatus `json:"status"`
+}
+
+// GetStatus returns __GetRunsOrErrorInput.Status, and is useful for accessing the field via an interface.
+func (v *__GetRunsOrErrorInput) GetStatus() RunStatus { return v.Status }
+
+// The query or mutation executed by GetRunsOrError.
+const GetRunsOrError_Operation = `
+query GetRunsOrError ($status: RunStatus!) {
+	runsOrError(filter: {statuses:[$status]}) {
 		__typename
 		... on Runs {
 			count
@@ -212,17 +242,21 @@ query getSuccessfulRuns {
 }
 `
 
-func getSuccessfulRuns(
+func GetRunsOrError(
 	ctx_ context.Context,
 	client_ graphql.Client,
-) (*getSuccessfulRunsResponse, error) {
+	status RunStatus,
+) (*GetRunsOrErrorResponse, error) {
 	req_ := &graphql.Request{
-		OpName: "getSuccessfulRuns",
-		Query:  getSuccessfulRuns_Operation,
+		OpName: "GetRunsOrError",
+		Query:  GetRunsOrError_Operation,
+		Variables: &__GetRunsOrErrorInput{
+			Status: status,
+		},
 	}
 	var err_ error
 
-	var data_ getSuccessfulRunsResponse
+	var data_ GetRunsOrErrorResponse
 	resp_ := &graphql.Response{Data: &data_}
 
 	err_ = client_.MakeRequest(
