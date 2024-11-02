@@ -6,27 +6,32 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/Khan/genqlient/graphql"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
+const (
+	PROMETHEUS_COROUTINE_DURATION = time.Second * 2
+)
+
+var (
+	metricV = &metrics{
+		dagsterRuns: prometheus.NewGaugeVec(prometheus.GaugeOpts{
+			Name: "dagster_runs",
+			Help: "The number of dagster runs defined by status and code location and jobs",
+		}, []string{"status"}),
+	}
+)
+
 type metrics struct {
 	dagsterRuns *prometheus.GaugeVec
 }
 
-func getHandler() *http.Handler {
+func getRunsMetrics() map[string]float64 {
 	GRAPHQL_ENDPOINT := os.Getenv("GRAPHQL_ENDPOINT")
-	reg := prometheus.NewRegistry()
-	metrics := &metrics{
-		dagsterRuns: nil,
-	}
-
-	metrics.dagsterRuns = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Name: "dagster_runs_running",
-		Help: "The number of dagster runs running",
-	}, []string{"status"})
 
 	RunStatuses := []RunStatus{
 		RunStatusQueued,
@@ -39,6 +44,8 @@ func getHandler() *http.Handler {
 		RunStatusCanceling,
 		RunStatusCanceled,
 	}
+
+	result := map[string]float64{}
 
 	for _, status := range RunStatuses {
 		client := graphql.NewClient(GRAPHQL_ENDPOINT, http.DefaultClient)
@@ -59,19 +66,32 @@ func getHandler() *http.Handler {
 			// TODO handle this better
 			os.Exit(1)
 		}
-
-		metrics.dagsterRuns.WithLabelValues(string(status)).Set(float64(cast.Count))
+		result[string(status)] = float64(cast.Count)
 	}
+	return result
+}
 
-	reg.MustRegister(metrics.dagsterRuns)
+func recordMetrics() {
+	go func() {
+		for {
+			for k, v := range getRunsMetrics() {
+				metricV.dagsterRuns.WithLabelValues(k).Set(v)
+			}
+			time.Sleep(PROMETHEUS_COROUTINE_DURATION)
+		}
+	}()
+}
 
+func getHandler() *http.Handler {
+	reg := prometheus.NewRegistry()
+	reg.MustRegister(metricV.dagsterRuns)
 	handler := promhttp.HandlerFor(reg, promhttp.HandlerOpts{Registry: reg})
 
 	return &handler
 }
 
 func main() {
-
+	recordMetrics()
 	handler := getHandler()
 
 	http.Handle("/metrics", *handler)
